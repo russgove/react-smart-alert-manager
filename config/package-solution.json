@@ -1,21 +1,34 @@
 {
-  "$schema": "https://developer.microsoft.com/json-schemas/spfx-build/package-solution.schema.json",
-  "solution": {
-    "name": "react-smart-alert-manager-client-side-solution",
-    "id": "84dfc1b4-14b9-4186-ae1f-df0a3900b030",
-    "version": "1.0.0.0",
-    "includeClientSideAssets": true,
-    "skipFeatureDeployment": true,
-    "isDomainIsolated": true,
-    "developer": {
-      "name": "",
-      "websiteUrl": "",
-      "privacyUrl": "",
-      "termsOfUseUrl": "",
-      "mpnId": ""
+    "$schema": "https://developer.microsoft.com/json-schemas/spfx-build/package-solution.schema.json",
+    "solution": {
+        "name": "react-smart-alert-manager-client-side-solution",
+        "id": "84dfc1b4-14b9-4186-ae1f-df0a3900b030",
+        "version": "1.12.0.0",
+        "includeClientSideAssets": true,
+
+        "isDomainIsolated": false,
+        "developer": {
+            "name": "",
+            "websiteUrl": "",
+            "privacyUrl": "",
+            "termsOfUseUrl": "",
+            "mpnId": ""
+        },
+        "features": [{
+            "title": "react-smart-alert-manager",
+            "description": "react smart alert manager",
+            "id": "a1c87fdf-faad-4863-a4f4-a4a65c0f09b7",
+            "version": "1.12.0.0",
+            "assets": {
+                "elementManifests": ["elements.xml"],
+                "elementFiles": [
+                    "listSchema.xml",
+                    "SmartAlerts.aspx"
+                ]
+            }
+        }]
+    },
+    "paths": {
+        "zippedPackage": "solution/react-smart-alert-manager.sppkg"
     }
-  },
-  "paths": {
-    "zippedPackage": "solution/react-smart-alert-manager.sppkg"
-  }
 }
