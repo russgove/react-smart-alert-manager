@@ -3,7 +3,7 @@
     "solution": {
         "name": "react-smart-alert-manager-client-side-solution",
         "id": "84dfc1b4-14b9-4186-ae1f-df0a3900b030",
-        "version": "1.12.0.0",
+        "version": "1.15.0.0",
         "includeClientSideAssets": true,
 
         "isDomainIsolated": false,
@@ -18,7 +18,7 @@
             "title": "react-smart-alert-manager",
             "description": "react smart alert manager",
             "id": "a1c87fdf-faad-4863-a4f4-a4a65c0f09b7",
-            "version": "1.12.0.0",
+            "version": "1.15.0.0",
             "assets": {
                 "elementManifests": ["elements.xml"],
                 "elementFiles": [

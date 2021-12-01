@@ -19,7 +19,7 @@
         "@pnp/odata": "2.0.6",
         "@pnp/polyfill-ie11": "2.0.2",
         "@pnp/sp": "2.0.6",
-        "@pnp/spfx-controls-react": "1.20.0",
+        "@pnp/spfx-controls-react": "^2.1.0",
         "@pnp/spfx-property-controls": "1.20.0",
         "lodash": "4.17.21",
         "office-ui-fabric-react": "7.156.0",

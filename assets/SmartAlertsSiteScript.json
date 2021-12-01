@@ -1,0 +1,92 @@
+{
+    "$schema": "https://developer.microsoft.com/json-schemas/sp/site-design-script-actions.schema.json",
+
+    "actions": [{
+            "verb": "createSiteColumnXml",
+            "schemaXml": "<Field Type=\"Text\" DisplayName=\"SAChangeToken\" Required=\"FALSE\" EnforceUniqueValues=\"FALSE\" Indexed=\"FALSE\" MaxLength=\"255\" Group=\"Custom Columns\" ID=\"{9e966aa9-0061-43e9-a948-3b3900935bcd}\" StaticName=\"SAChangeToken\" Name=\"SAChangeToken\" Customization=\"\" />",
+            "pushChanges": true
+        },
+        {
+            "verb": "createSiteColumnXml",
+            "schemaXml": "<Field Type=\"Text\" DisplayName=\"SAColumnId\" Required=\"FALSE\" EnforceUniqueValues=\"FALSE\" Indexed=\"FALSE\" MaxLength=\"255\" Group=\"Custom Columns\" ID=\"{6da5b6cf-23a0-4b96-8bad-c4126253229e}\" StaticName=\"SAColumnId\" Name=\"SAColumnId\" Customization=\"\" />",
+            "pushChanges": true
+        },
+        {
+            "verb": "createSiteColumnXml",
+            "schemaXml": "<Field Type=\"Note\" DisplayName=\"SAMessageText\" Required=\"FALSE\" EnforceUniqueValues=\"FALSE\" Indexed=\"FALSE\" NumLines=\"6\" RichText=\"TRUE\" RichTextMode=\"FullHtml\" IsolateStyles=\"TRUE\" Sortable=\"FALSE\" Group=\"Custom Columns\" ID=\"{328718e3-47e5-481f-8402-0ec4b1b68850}\" StaticName=\"SAMessageText\" Name=\"SAMessageText\" Customization=\"\" />",
+            "pushChanges": true
+        },
+        {
+            "verb": "createContentType",
+            "name": "SASmartAlerts",
+            "id": "0x010019120A3DC0D2FA4094B62A6F3B2EAEEE",
+            "description": "",
+            "parentId": "0x01",
+            "hidden": false,
+            "group": "Custom Content Types",
+            "subactions": [{
+                    "verb": "addSiteColumn",
+                    "internalName": "SAChangeToken"
+                },
+                {
+                    "verb": "addSiteColumn",
+                    "internalName": "SAColumnId"
+                },
+                {
+                    "verb": "addSiteColumn",
+                    "internalName": "SAMessageText"
+                }
+            ]
+        },
+        {
+            "verb": "createSPList",
+            "listName": "SmartAlerts",
+            "templateType": 100,
+            "color": "6",
+            "icon": "3",
+            "subactions": [{
+                    "verb": "addSPFieldXml",
+                    "schemaXml": "<Field ID=\"{fa564e0f-0c70-4ab9-b863-0177e6ddd247}\" Type=\"Text\" Name=\"Title\" DisplayName=\"Title\" Required=\"TRUE\" SourceID=\"http://schemas.microsoft.com/sharepoint/v3\" StaticName=\"Title\" FromBaseType=\"TRUE\" MaxLength=\"255\" />"
+                },
+                {
+                    "verb": "addSPFieldXml",
+                    "schemaXml": "<Field ID=\"{82642ec8-ef9b-478f-acf9-31f7d45fbc31}\" DisplayName=\"Title\" Description=\"\" Name=\"LinkTitle\" SourceID=\"http://schemas.microsoft.com/sharepoint/v3\" StaticName=\"LinkTitle\" Type=\"Computed\" ReadOnly=\"TRUE\" FromBaseType=\"TRUE\" Width=\"150\" DisplayNameSrcField=\"Title\" Sealed=\"FALSE\"><FieldRefs><FieldRef Name=\"Title\" /><FieldRef Name=\"LinkTitleNoMenu\" /><FieldRef Name=\"_EditMenuTableStart2\" /><FieldRef Name=\"_EditMenuTableEnd\" /></FieldRefs><DisplayPattern><FieldSwitch><Expr><GetVar Name=\"FreeForm\" /></Expr><Case Value=\"TRUE\"><Field Name=\"LinkTitleNoMenu\" /></Case><Default><HTML><![CDATA[<div class=\"ms-vb itx\" onmouseover=\"OnItem(this)\" CTXName=\"ctx]]></HTML><Field Name=\"_EditMenuTableStart2\" /><HTML><![CDATA[\">]]></HTML><Field Name=\"LinkTitleNoMenu\" /><HTML><![CDATA[</div>]]></HTML><HTML><![CDATA[<div class=\"s4-ctx\" onmouseover=\"OnChildItem(this.parentNode); return false;\">]]></HTML><HTML><![CDATA[<span>&nbsp;</span>]]></HTML><HTML><![CDATA[<a onfocus=\"OnChildItem(this.parentNode.parentNode); return false;\" onclick=\"PopMenuFromChevron(event); return false;\" href=\"javascript:;\" title=\"Open Menu\"></a>]]></HTML><HTML><![CDATA[<span>&nbsp;</span>]]></HTML><HTML><![CDATA[</div>]]></HTML></Default></FieldSwitch></DisplayPattern></Field>"
+                },
+                {
+                    "verb": "addContentType",
+                    "name": "SASmartAlerts",
+                    "id": "0x010019120A3DC0D2FA4094B62A6F3B2EAEEE"
+                },
+                {
+                    "verb": "addContentType",
+                    "name": "Folder",
+                    "id": "0x0120"
+                },
+                {
+                    "verb": "addSPView",
+                    "name": "All Items",
+                    "viewFields": [
+                        "LinkTitle",
+                        "SAChangeToken",
+                        "SAColumnId",
+                        "SAMessageText"
+                    ],
+                    "query": "",
+                    "rowLimit": 30,
+                    "isPaged": true,
+                    "makeDefault": true,
+                    "replaceViewFields": true
+                }
+            ]
+        },
+        {
+            "verb": "installSolution",
+            "id": "84dfc1b4-14b9-4186-ae1f-df0a3900b030"
+        },
+        {
+            "verb": "activateSPFeature",
+            "featureId": "DD87E19F-AC60-445F-A6CA-788D2A9C971A",
+            "scope": "web"
+        }
+    ]
+}

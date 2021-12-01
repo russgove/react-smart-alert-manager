@@ -1,0 +1,86 @@
+<List xmlns:ows="Microsoft SharePoint" 
+      Title="List Schema"
+      Name="ListSchema"
+      Direction="$Resources:Direction;"
+      Url="Lists/ListSchema"
+      BaseType="0"
+      EnableContentTypes="TRUE"
+      FolderCreation="FALSE"
+      VersioningEnabled="TRUE"
+      MajorVersionLimit="100" 
+      EnableMinorVersions="FALSE"
+      MajorWithMinorVersionsLimit="0"
+      DisableAttachments="FALSE"
+      xmlns="http://schemas.microsoft.com/sharepoint/"
+      RootWebOnly="FALSE">
+  <MetaData>
+    <ContentTypes>
+        <!-- ContentType: SPFxItem -->
+        <!-- 
+            I could not make the required fields work 
+            by just specifying <ContentTypeRef ID="0x0100CEADAD40C6630B489BDF172555628DA0" />.
+            If ContentTypeRef used, it creates new 'Item' ContentType that inherits from SPFxItem (0x0100CEADAD40C6630B489BDF172555628DA0)
+            but this removes the Required="TRUE" rule from the fields this is why I came with bellow solution.
+            See: https://msdn.microsoft.com/en-us/library/office/aa543822(v=office.14).aspx.
+        -->
+        <ContentType ID="0x010019120A3DC0D2FA4094B62A6F3B2EAEEE" 
+                 Name="SASmartAlerts"
+                 Group="SPFx Content Types"
+                 Description="">
+        <FieldRefs>
+            <!--Title Site Column -->
+            <FieldRef ID="{fa564e0f-0c70-4ab9-b863-0177e6ddd247}" Required="TRUE" ShowInNewForm="TRUE" ShowInEditForm="TRUE" />
+             <!-- SAChangeToken Site Column -->
+             <FieldRef ID="{9e966aa9-0061-43e9-a948-3b3900935bcd}"  Required="FALSE" ShowInNewForm="TRUE" ShowInEditForm="TRUE" />
+             <!-- SAListId Site Column -->
+             <FieldRef ID="{3e96e332-fd2b-42cd-ac36-6f9e54f425a7}"  Required="FALSE" ShowInNewForm="TRUE" ShowInEditForm="TRUE" />
+             <!-- SAColumnId Site Column -->
+             <FieldRef ID="{6da5b6cf-23a0-4b96-8bad-c4126253229e}"  Required="FALSE" ShowInNewForm="TRUE" ShowInEditForm="TRUE" />
+             <!-- SAMessageText Site Column -->
+             <FieldRef ID="{328718e3-47e5-481f-8402-0ec4b1b68850}"  Required="FALSE" ShowInNewForm="TRUE" ShowInEditForm="TRUE" />
+              <!-- SACCOriginator Site Column -->
+             <FieldRef ID="{c4ccd043-0b22-4d11-bca7-74b7fd85819e}"  Required="FALSE" ShowInNewForm="TRUE" ShowInEditForm="TRUE" />
+            
+   
+        </FieldRefs>
+      </ContentType> 
+    </ContentTypes>
+    <Fields></Fields>
+    <Views>
+      <View BaseViewID="1" 
+            Type="HTML"
+            WebPartZoneID="Main"
+            DisplayName="$Resources:core,objectiv_schema_mwsidcamlidC24;"
+            DefaultView="TRUE"
+            MobileView="TRUE"
+            MobileDefaultView="TRUE"
+            SetupPath="pages\viewpage.aspx"
+            ImageUrl="/_layouts/images/generic.png"
+            Url="AllItems.aspx">
+        <XslLink Default="TRUE">main.xsl</XslLink>
+        <JSLink>clienttemplates.js</JSLink>
+        <RowLimit Paged="TRUE">30</RowLimit>
+        <Toolbar Type="Standard" />
+        <ViewFields>
+          <!-- Name is the InternalName -->
+          <FieldRef Name="LinkTitle"></FieldRef>
+          <FieldRef Name="SAChangeToken"></FieldRef>
+          <FieldRef Name="SAListId"></FieldRef>
+          <FieldRef Name="SAColumnId"></FieldRef>
+          <FieldRef Name="SAMessageText"></FieldRef>
+          <FieldRef Name="SACCOriginator"></FieldRef>
+        </ViewFields>
+        <Query>
+          <OrderBy>
+            <FieldRef Name="ID" />
+          </OrderBy>
+        </Query>
+      </View>
+    </Views>
+    <Forms>
+      <Form Type="DisplayForm" Url="DispForm.aspx" SetupPath="pages\form.aspx" WebPartZoneID="Main" />
+      <Form Type="EditForm" Url="EditForm.aspx" SetupPath="pages\form.aspx" WebPartZoneID="Main" />
+      <Form Type="NewForm" Url="NewForm.aspx" SetupPath="pages\form.aspx" WebPartZoneID="Main" />
+    </Forms>
+  </MetaData>
+</List>

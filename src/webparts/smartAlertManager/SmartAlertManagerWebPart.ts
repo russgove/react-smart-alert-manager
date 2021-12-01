@@ -10,6 +10,7 @@ import * as strings from 'SmartAlertManagerWebPartStrings';
 
 export interface ISmartAlertManagerWebPartProps {
   endpointUrl: string;
+  smartAlertsListId:string;
 }
 
 export default class SmartAlertManagerWebPart extends BaseClientSideWebPart<ISmartAlertManagerWebPartProps> {
@@ -23,7 +24,9 @@ export default class SmartAlertManagerWebPart extends BaseClientSideWebPart<ISma
     const element: React.ReactElement<ISmartAlertManagerProps> = React.createElement(
       SmartAlertManager,
       {
-        endpointUrl: this.properties.endpointUrl
+        endpointUrl: this.properties.endpointUrl,
+        smartAlertsListId:this.properties.smartAlertsListId
+
       }
     );
 
@@ -51,7 +54,10 @@ export default class SmartAlertManagerWebPart extends BaseClientSideWebPart<ISma
               groupFields: [
                 PropertyPaneTextField('endpointUrl', {
                   label: strings.EndpointUrlFieldLabel
-                })
+                }),
+                PropertyPaneTextField('smartAlertsListId', {
+                  label: strings.SmartAlertsListIdFieldLabel
+                }),
               ]
             }
           ]

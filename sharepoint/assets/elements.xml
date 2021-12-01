@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Elements xmlns="http://schemas.microsoft.com/sharepoint/">
+    <!-- List of possible elements expected: 
+        'CustomAction, ClientWebPart, ClientSideComponent, 
+        Field, ContentType, ListInstance, Module, PropertyBag' 
+    -->
+
+    <!-- Upload Site Page with SPFx webpart -->
+    <Module Name="WebPartSitePage" Url="SitePages">
+        <File Path="SmartAlerts.aspx" Url="SmartAlerts.aspx" Type="GhostableInLibrary"></File>
+    </Module>
+
+    <!-- SAChangeToken Site Column -->
+    <Field 
+         Type="Text" 
+         DisplayName="SAChangeToken" 
+         Required="FALSE" 
+         EnforceUniqueValues="FALSE" 
+         Indexed="FALSE" 
+         MaxLength="255" 
+         Group="Custom Columns" 
+         ID="{9e966aa9-0061-43e9-a948-3b3900935bcd}" 
+         StaticName="SAChangeToken" 
+         Name="SAChangeToken" 
+         Version="1" />
+
+    <!-- SAListId Site Column -->
+    <Field Type="Text" 
+        DisplayName="SAListId" 
+        Required="FALSE" 
+        EnforceUniqueValues="FALSE" 
+        Indexed="FALSE" 
+        MaxLength="255" 
+        Group="Custom Columns" 
+        ID="{3e96e332-fd2b-42cd-ac36-6f9e54f425a7}" 
+        StaticName="SAListId" 
+        Name="SAListId" 
+        Version="1" />
+
+    <!-- SAColumnId Site Column -->
+    <Field Type="Text" 
+        DisplayName="SAColumnId" 
+        Required="FALSE" 
+        EnforceUniqueValues="FALSE" 
+        Indexed="FALSE" 
+        MaxLength="255" 
+        Group="Custom Columns" 
+        ID="{6da5b6cf-23a0-4b96-8bad-c4126253229e}" 
+        StaticName="SAColumnId" 
+        Name="SAColumnId" 
+        Version="1" />
+
+    <!-- SAMessageText Site Column -->
+    <Field 
+         Type="Note" 
+         DisplayName="SAMessageText" 
+         Required="FALSE" 
+         EnforceUniqueValues="FALSE" 
+         Indexed="FALSE" 
+         NumLines="6" 
+         RichText="TRUE" 
+         RichTextMode="FullHtml" 
+         IsolateStyles="TRUE" 
+         Sortable="FALSE" 
+         Group="Custom Columns" 
+         ID="{328718e3-47e5-481f-8402-0ec4b1b68850}" 
+         StaticName="SAMessageText" 
+         Name="SAMessageText" 
+         Version="1" />
+    <!-- SACCOriginator Site Column -->
+    <Field Type="Boolean" 
+        DisplayName="SACCOriginator" 
+        EnforceUniqueValues="FALSE" 
+        Indexed="FALSE" 
+        Group="Custom Columns" 
+        ID="{c4ccd043-0b22-4d11-bca7-74b7fd85819e}" 
+        StaticName="SACCOriginator" 
+        Name="SACCOriginator" 
+        Version="1" />
+    <!-- Parent ContentType: Item (0x0100) -->
+    <ContentType ID="0x010019120A3DC0D2FA4094B62A6F3B2EAEEE" Name="SASmartAlerts" Group="_Smart ALerts" Description="" Inherits="FALSE" Version="0" Hidden="FALSE" Sealed="FALSE">
+        <FieldRefs>
+            <!-- SAChangeToken Site Column -->
+            <FieldRef ID="{9e966aa9-0061-43e9-a948-3b3900935bcd}"  Required="FALSE" ShowInNewForm="TRUE" ShowInEditForm="TRUE" />
+            <!-- SAListId Site Column -->
+            <FieldRef ID="{3e96e332-fd2b-42cd-ac36-6f9e54f425a7}"  Required="FALSE" ShowInNewForm="TRUE" ShowInEditForm="TRUE" />
+            <!-- SAColumnId Site Column -->
+            <FieldRef ID="{6da5b6cf-23a0-4b96-8bad-c4126253229e}"  Required="FALSE" ShowInNewForm="TRUE" ShowInEditForm="TRUE" />
+            <!-- SAMessageText Site Column -->
+            <FieldRef ID="{328718e3-47e5-481f-8402-0ec4b1b68850}"  Required="FALSE" ShowInNewForm="TRUE" ShowInEditForm="TRUE" />
+            <!-- SACCOriginator Site Column -->
+            <FieldRef ID="{c4ccd043-0b22-4d11-bca7-74b7fd85819e}"  Required="FALSE" ShowInNewForm="TRUE" ShowInEditForm="TRUE" />
+            
+        </FieldRefs>
+    </ContentType>
+
+    <!-- List (TemplateType 100) -->
+    <ListInstance CustomSchema="listSchema.xml" FeatureId="00bfea71-de22-43b2-a848-c05709900100" Title="Smart Alerts" Description="" TemplateType="100" Url="Lists/SmartAlerts" Hidden="FALSE">
+        <!-- Add default data with the list -->
+        <!-- Note: Deactivating and activating the feature will 
+            duplicate the data, so remove or comment if no initial data needed
+            -->
+    </ListInstance>
+
+  
+</Elements>
