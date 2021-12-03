@@ -8,13 +8,13 @@ import { IWebs, Webs } from "@pnp/sp/webs";
 import { IViewField, ListView } from '@pnp/spfx-controls-react/lib/controls/listView';
 import { RichText } from "@pnp/spfx-controls-react/lib/RichText";
 import { getIconClassName } from '@uifabric/styling';
-
-import { filter, map } from 'lodash';
+import {AlertEditor} from './AlertEditor';
+import { filter, map, sample } from 'lodash';
 import { ComboBox, IComboBox, IComboBoxOption } from 'office-ui-fabric-react/lib/ComboBox';
 import { IColumn } from 'office-ui-fabric-react/lib/components/DetailsList';
-import { DatePicker } from 'office-ui-fabric-react/lib/DatePicker';
+
 import "@pnp/sp/items";
-import { Panel, PanelType } from 'office-ui-fabric-react/lib/Panel';
+
 import * as React from 'react';
 import { useEffect, useState } from 'react';
 
@@ -29,43 +29,9 @@ import "@pnp/sp/webs";
 export const SmartAlertManager: React.FunctionComponent<ISmartAlertManagerProps> = (props) => {
   const [listInfos, setListInfos] = useState<IListInfo[]>();
   const [smartAlerts, setSmartAlerts] = useState<SmartAlert[]>();
-  const [userField, setUserField] = useState<IComboBoxOption>();
-  const [mailSubject, setMailSubject] = useState<string>();
-
-  const [mailText, setMailText] = useState<string>();
-  const [selectedList, setSelectedList] = useState<IListInfo>();
-  const [refresh, setRefresh] = useState<boolean>(false);
+   const [refresh, setRefresh] = useState<boolean>(false);
   const [mode, setMode] = useState<"showselected" | "display" | "addalert">('display');
-  const viewFieldsSubscriptions: any[] = [
-    {
-      name: 'actions', minWidth: 50, maxWidth: 50, displayName: 'Actions', render: (item?: IListInfo, index?: number) => {
-        return <div>
-          {/* <i className={getIconClassName('Redo')}
-            onClick={async (e) => {
-              debugger;
-              const url = `${parentContext.managementApiUrl}/api/EnqueueCallbackItems`;
-              const selected = [item];
-              await fetchAZFunc(parentContext.aadHttpClient, url, "POST", JSON.stringify(selected));
-              alert(`${selected.length} files where queued`);
-            }}></i>
-          &nbsp;&nbsp;    &nbsp;&nbsp;    &nbsp;&nbsp; */}
-          <i className={getIconClassName('View')} onClick={(x) => {
-
-            // setSelectedList(filter(listInfos,(li)=>{return li.Id===item.Id})[0]);
-            // setMode("showselected");
-
-          }}></i>
-        </div>;
-      }
-    },
-    { name: 'notificationUrl', minWidth: 100, maxWidth: 200, displayName: 'notificationUrl', sorting: true, isResizable: true },
-
-    { name: 'expirationDateTime', minWidth: 80, maxWidth: 120, displayName: 'Expires', sorting: true, isResizable: true },
-    { name: 'id', minWidth: 80, maxWidth: 120, displayName: 'ID', sorting: true, isResizable: true },
-    { name: 'resource', minWidth: 80, maxWidth: 120, displayName: 'Resource', sorting: true, isResizable: true },
-    { name: 'clientState', minWidth: 80, maxWidth: 120, displayName: 'CLientSTate', sorting: true, isResizable: true },
-
-  ];
+ 
   const viewFieldsSmartAlerts: any[] = [
     {
       name: 'actions', minWidth: 50, maxWidth: 50, displayName: 'Actions',
@@ -187,51 +153,9 @@ export const SmartAlertManager: React.FunctionComponent<ISmartAlertManagerProps>
     // },
 
   ];
-  const getPeopleFields = (): IComboBoxOption[] => {
-    debugger;
-    const xx = selectedList['Fields']
-      .filter(f => {
-        return f.TypeAsString === "User";
-      })
-      .map(f => {
-        return ({
-          key: f.InternalName,
-          id: f.InternalName,
-          text: f.Title,
-          title: f.Title
-        });
-      });
-    return xx;
-  };
-  const getFieldsToInclude = (): IComboBoxOption[] => {
-    debugger;
-    const xx = selectedList['Fields']
-      .filter(f => {
-        return f.Hidden === false;
-      })
-      .map(f => {
-        return ({
-          key: f.InternalName,
-          id: f.InternalName,
-          text: f.Title,
-          title: f.Title
-        });
-      });
-    return xx;
-  };
-  const getListOptions = (): IComboBoxOption[] => {
-    debugger;
-    const xx = listInfos
-      .map(f => {
-        return ({
-          key: f.Id,
-          id: f.Id,
-          text: f.Title,
-          title: f.Title
-        });
-      });
-    return xx;
-  };
+
+
+
   //https://13ac-162-83-141-149.ngrok.io/api/SharePointListNotifications
 
   //filter(`Subscriptions/notificationUrl eq ${props.endpointUrl}`).
@@ -275,136 +199,24 @@ export const SmartAlertManager: React.FunctionComponent<ISmartAlertManagerProps>
       });
 
   }, [refresh]);
-
-  const userFields = selectedList ? getPeopleFields() : [];
-  const fieldsToInclude = selectedList ? getFieldsToInclude() : [];
-
-  return <div>
+ return <div>
     <ListView items={smartAlerts} viewFields={viewFieldsSmartAlerts}></ListView>
     <PrimaryButton onClick={(e) => {
       setMode("addalert");
     }}>Add Smart Alert</PrimaryButton>
-    {(mode === "showselected") &&
-      <Panel type={PanelType.extraLarge}
-        headerText={`Smart Alerts for ${selectedList.Title}`}
-        isOpen={mode === "showselected"}
-        onDismiss={(e) => {
-          setMode("display");
-        }} >
-        <ListView
-          items={filter(listInfos, (li) => {
-
-            return li.Id === selectedList.Id;
-          })[0]['Subscriptions']}
-          viewFields={viewFieldsSubscriptions}
-        //  stickyHeader={true}
-        ></ListView>
-        <PrimaryButton onClick={(e) => {
-          setMode("addalert");
-        }}>Add Smart Alert</PrimaryButton>
-      </Panel>
-    }
-    {/* ******************************************* ADD AN ALERT ******************************** */}
+       {/* ******************************************* ADD AN ALERT ******************************** */}
     {(mode === "addalert") &&
-      <Panel type={PanelType.medium}
-        headerText={`Add a Smart Alert`}
-        isOpen={mode === "addalert"}
-        onDismiss={(e) => {
-          setMode("display");
-        }} >
-
-
-        <ComboBox label="Select a List"
-          selectedKey={selectedList ? selectedList.Id : null}
-          options={getListOptions()}
-          onChange={(e, option?: IComboBoxOption, index?: number, value?: string) => {
-            debugger;
-            setSelectedList(filter(listInfos, (li) => li.Id === option.id)[0]);
-          }}></ComboBox>
-
-        <ComboBox label="User to recieve alerts"
-          selectedKey={userField ? userField.id : null}
-          options={userFields}
-          onChange={(e, option?: IComboBoxOption, index?: number, value?: string) => {
-            debugger;
-            setUserField(option);
-          }}></ComboBox>
-
-        <TextField value={mailSubject}
-          label="Email Text"
-          onChange={(e, newVal) => {
-            debugger;
-            setMailSubject(newVal);
-            return e;
-          }} />
-
-        <Label>Email Text</Label>
-        <RichText value={mailText}
-          onChange={(e) => {
-            debugger;
-            setMailText(e);
-            return e;
-          }} />
-        <DatePicker label="ExpirationDate"></DatePicker>
-
-        <Label>Tags to Include in Email Text</Label>
-        <table>
-          <th>
-            <tr>
-              <td>To inlude this field</td>
-              <td>use this tag</td>
-            </tr>
-
-          </th>
-          <tbody>
-          {fieldsToInclude.map(f=>{
-            debugger;
-            return (<tr>
-              <td>{f.title}</td>
-              <td>&#123;{f.id}&#125;</td>
-            </tr>);
-          })}
-          </tbody>
-          
-        </table>
-        <PrimaryButton onClick={(e) => {
-          debugger;
-          sp.web.lists.getById(selectedList.Id).subscriptions.add(props.endpointUrl, "2021-12-31T23:00:00+00:00", `${props.smartAlertsListId}`)
-            .then((value) => {
-              //TODO: set timestamp
-              sp.web.lists.getByTitle(props.smartAlertsListId).items.add({
-                "Title": `${selectedList.Id}`,
-                "SAChangeToken": `${selectedList.CurrentChangeToken.StringValue}`,
-                "SAColumnName": `${userField.id}`,
-                "SAMessageText": `${mailText}`,
-                "SAListId": `${selectedList.Id}`,
-              })
-                .then(item => {
-                  debugger;
-
-                  alert(`Smart alert added`);
-                  setSelectedList(null);
-                  setUserField(null);
-                  setMailText(null);
-                  setRefresh(!refresh);
-                  setMode("display");
-                })
-                .catch(error => {
-                  console.error(error);
-                  alert(`Error updating smart alerts list`);
-                  alert(error);
-                });
-
-            })
-            .catch((error) => {
-              console.error(error);
-              alert(`Error adding subscription`);
-              alert(error);
-              debugger;
-            });
-
-        }}>save</PrimaryButton>
-      </Panel>
+      <AlertEditor 
+      endpointUrl={props.endpointUrl} 
+      smartAlertsListId={props.smartAlertsListId}
+      listInfos={listInfos}
+      onDismiss={() => {
+        setRefresh(!refresh);
+        setMode("display");
+        
+                  
+      }}
+       />
     }
   </div>;
 };
