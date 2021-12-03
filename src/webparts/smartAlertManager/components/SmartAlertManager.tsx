@@ -1,4 +1,4 @@
-import { Label, PrimaryButton } from '@microsoft/office-ui-fabric-react-bundle';
+import { Label, PrimaryButton, TextField } from '@microsoft/office-ui-fabric-react-bundle';
 import { escape } from '@microsoft/sp-lodash-subset';
 import { sp } from '@pnp/sp';
 import { Fields, IFieldInfo, IFields } from "@pnp/sp/fields";
@@ -30,6 +30,8 @@ export const SmartAlertManager: React.FunctionComponent<ISmartAlertManagerProps>
   const [listInfos, setListInfos] = useState<IListInfo[]>();
   const [smartAlerts, setSmartAlerts] = useState<SmartAlert[]>();
   const [userField, setUserField] = useState<IComboBoxOption>();
+  const [mailSubject, setMailSubject] = useState<string>();
+
   const [mailText, setMailText] = useState<string>();
   const [selectedList, setSelectedList] = useState<IListInfo>();
   const [refresh, setRefresh] = useState<boolean>(false);
@@ -78,7 +80,7 @@ export const SmartAlertManager: React.FunctionComponent<ISmartAlertManagerProps>
                 })
                 .catch((err) => {
                   return null;
-                })
+                });
               debugger;
               sp.web.lists.getByTitle(props.smartAlertsListId).items.getById(item.Id).delete()
                 .then(async xx => {
@@ -86,7 +88,7 @@ export const SmartAlertManager: React.FunctionComponent<ISmartAlertManagerProps>
                   // if its the last alert on the list delet the subscriptopm
                   var remainingAlerts = await sp.web.lists.getByTitle(props.smartAlertsListId).items.filter(`SAListId eq '${listId}'`).get();
                   if (remainingAlerts.length === 0) {
-                    // delete the subscroiptin (gotta get it first!)
+                    // delete the subscriptipn (gotta get it first!)
                     debugger;
                     var subscriptionId = await
                       sp.web.lists.getById(listId)
@@ -102,11 +104,11 @@ export const SmartAlertManager: React.FunctionComponent<ISmartAlertManagerProps>
                         .getById(subscriptionId)
                         .delete()
                         .then((value) => {
-                       
+
                           alert(`Smart alert deleted. No other alerts are present on the list. Subscription deleted.`);
                           setRefresh(!refresh);
                         }).catch((err) => {
-                      
+
                           alert(`Smart alert deleted, but there was an error deleting the subscription`);
                           setRefresh(!refresh);
                         });
@@ -147,20 +149,20 @@ export const SmartAlertManager: React.FunctionComponent<ISmartAlertManagerProps>
       }
     },
     {
-      name: 'SAColumnId', minWidth: 80, maxWidth: 120, displayName: 'Column', sorting: true, isResizable: true, render: (item?: SmartAlert, index?: number) => {
+      name: 'SAColumnName', minWidth: 80, maxWidth: 120, displayName: 'Column', sorting: true, isResizable: true, render: (item?: SmartAlert, index?: number) => {
 
         var list = filter(listInfos, (li) => li.Id === item.SAListId);
         if (list.length > 0) {
-          var column = filter(list[0].Fields, (fi) => fi.Id === item.SAColumnId);
+          var column = filter(list[0].Fields, (fi) => fi.Id === item.SAColumnName);
           if (column.length > 0) {
             return column[0].Title;
           }
           else {
-            return item.SAColumnId;
+            return item.SAColumnName;
           }
         }
         else {
-          return item.SAColumnId;
+          return item.SAColumnName;
         }
       }
     },
@@ -193,8 +195,24 @@ export const SmartAlertManager: React.FunctionComponent<ISmartAlertManagerProps>
       })
       .map(f => {
         return ({
-          key: f.Id,
-          id: f.Id,
+          key: f.InternalName,
+          id: f.InternalName,
+          text: f.Title,
+          title: f.Title
+        });
+      });
+    return xx;
+  };
+  const getFieldsToInclude = (): IComboBoxOption[] => {
+    debugger;
+    const xx = selectedList['Fields']
+      .filter(f => {
+        return f.Hidden === false;
+      })
+      .map(f => {
+        return ({
+          key: f.InternalName,
+          id: f.InternalName,
           text: f.Title,
           title: f.Title
         });
@@ -242,9 +260,10 @@ export const SmartAlertManager: React.FunctionComponent<ISmartAlertManagerProps>
         setSmartAlerts(map(alerts, a => {
           return {
             SACCOriginator: false,
+            SAMessageSubject: a["SAMessageSubject"],
             SAMessageText: a["SAMessageText"],
             SAListId: a["SAListId"],
-            SAColumnId: a["SAColumnId"],
+            SAColumnName: a["SAColumnName"],
             SAChangeToken: a["SAChangeToken"],
             Id: a["Id"]
           };
@@ -258,6 +277,8 @@ export const SmartAlertManager: React.FunctionComponent<ISmartAlertManagerProps>
   }, [refresh]);
 
   const userFields = selectedList ? getPeopleFields() : [];
+  const fieldsToInclude = selectedList ? getFieldsToInclude() : [];
+
   return <div>
     <ListView items={smartAlerts} viewFields={viewFieldsSmartAlerts}></ListView>
     <PrimaryButton onClick={(e) => {
@@ -283,6 +304,7 @@ export const SmartAlertManager: React.FunctionComponent<ISmartAlertManagerProps>
         }}>Add Smart Alert</PrimaryButton>
       </Panel>
     }
+    {/* ******************************************* ADD AN ALERT ******************************** */}
     {(mode === "addalert") &&
       <Panel type={PanelType.medium}
         headerText={`Add a Smart Alert`}
@@ -307,8 +329,16 @@ export const SmartAlertManager: React.FunctionComponent<ISmartAlertManagerProps>
             debugger;
             setUserField(option);
           }}></ComboBox>
-        <Label>Email Text</Label>
 
+        <TextField value={mailSubject}
+          label="Email Text"
+          onChange={(e, newVal) => {
+            debugger;
+            setMailSubject(newVal);
+            return e;
+          }} />
+
+        <Label>Email Text</Label>
         <RichText value={mailText}
           onChange={(e) => {
             debugger;
@@ -316,6 +346,27 @@ export const SmartAlertManager: React.FunctionComponent<ISmartAlertManagerProps>
             return e;
           }} />
         <DatePicker label="ExpirationDate"></DatePicker>
+
+        <Label>Tags to Include in Email Text</Label>
+        <table>
+          <th>
+            <tr>
+              <td>To inlude this field</td>
+              <td>use this tag</td>
+            </tr>
+
+          </th>
+          <tbody>
+          {fieldsToInclude.map(f=>{
+            debugger;
+            return (<tr>
+              <td>{f.title}</td>
+              <td>&#123;{f.id}&#125;</td>
+            </tr>);
+          })}
+          </tbody>
+          
+        </table>
         <PrimaryButton onClick={(e) => {
           debugger;
           sp.web.lists.getById(selectedList.Id).subscriptions.add(props.endpointUrl, "2021-12-31T23:00:00+00:00", `${props.smartAlertsListId}`)
@@ -324,7 +375,7 @@ export const SmartAlertManager: React.FunctionComponent<ISmartAlertManagerProps>
               sp.web.lists.getByTitle(props.smartAlertsListId).items.add({
                 "Title": `${selectedList.Id}`,
                 "SAChangeToken": `${selectedList.CurrentChangeToken.StringValue}`,
-                "SAColumnId": `${userField.id}`,
+                "SAColumnName": `${userField.id}`,
                 "SAMessageText": `${mailText}`,
                 "SAListId": `${selectedList.Id}`,
               })

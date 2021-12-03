@@ -37,19 +37,30 @@
         Name="SAListId" 
         Version="1" />
 
-    <!-- SAColumnId Site Column -->
+    <!-- SAColumnName Site Column -->
     <Field Type="Text" 
-        DisplayName="SAColumnId" 
+        DisplayName="SAColumnName" 
         Required="FALSE" 
         EnforceUniqueValues="FALSE" 
         Indexed="FALSE" 
         MaxLength="255" 
         Group="Custom Columns" 
         ID="{6da5b6cf-23a0-4b96-8bad-c4126253229e}" 
-        StaticName="SAColumnId" 
-        Name="SAColumnId" 
+        StaticName="SAColumnName" 
+        Name="SAColumnName" 
         Version="1" />
-
+    <!-- SAMessageSubject Site Column -->
+    <Field DisplayName="SAMessageSubject" 
+        Type="Text" 
+        Required="FALSE" 
+        ID="{178d2a37-57ce-476f-b1e2-0ad5135b2a05}" 
+        StaticName="SAMessageSubject" 
+        Name="SAMessageSubject" 
+        Version="2" 
+        Group="Custom Columns" 
+        CustomFormatter="" 
+        EnforceUniqueValues="FALSE" 
+        MaxLength="255" />
     <!-- SAMessageText Site Column -->
     <Field 
          Type="Note" 
@@ -84,8 +95,10 @@
             <FieldRef ID="{9e966aa9-0061-43e9-a948-3b3900935bcd}"  Required="FALSE" ShowInNewForm="TRUE" ShowInEditForm="TRUE" />
             <!-- SAListId Site Column -->
             <FieldRef ID="{3e96e332-fd2b-42cd-ac36-6f9e54f425a7}"  Required="FALSE" ShowInNewForm="TRUE" ShowInEditForm="TRUE" />
-            <!-- SAColumnId Site Column -->
+            <!-- SAColumnName Site Column -->
             <FieldRef ID="{6da5b6cf-23a0-4b96-8bad-c4126253229e}"  Required="FALSE" ShowInNewForm="TRUE" ShowInEditForm="TRUE" />
+            <!-- SAMessageSubject Site Column -->
+            <FieldRef ID="{178d2a37-57ce-476f-b1e2-0ad5135b2a05}"  Required="FALSE" ShowInNewForm="TRUE" ShowInEditForm="TRUE" />
             <!-- SAMessageText Site Column -->
             <FieldRef ID="{328718e3-47e5-481f-8402-0ec4b1b68850}"  Required="FALSE" ShowInNewForm="TRUE" ShowInEditForm="TRUE" />
             <!-- SACCOriginator Site Column -->

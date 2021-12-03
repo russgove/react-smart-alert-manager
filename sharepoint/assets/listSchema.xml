@@ -38,6 +38,9 @@
              <FieldRef ID="{6da5b6cf-23a0-4b96-8bad-c4126253229e}"  Required="FALSE" ShowInNewForm="TRUE" ShowInEditForm="TRUE" />
              <!-- SAMessageText Site Column -->
              <FieldRef ID="{328718e3-47e5-481f-8402-0ec4b1b68850}"  Required="FALSE" ShowInNewForm="TRUE" ShowInEditForm="TRUE" />
+             <!-- SAMessageSubject Site Column -->
+             <FieldRef ID="{178d2a37-57ce-476f-b1e2-0ad5135b2a05}"  Required="FALSE" ShowInNewForm="TRUE" ShowInEditForm="TRUE" />
+           
               <!-- SACCOriginator Site Column -->
              <FieldRef ID="{c4ccd043-0b22-4d11-bca7-74b7fd85819e}"  Required="FALSE" ShowInNewForm="TRUE" ShowInEditForm="TRUE" />
             
@@ -66,7 +69,8 @@
           <FieldRef Name="LinkTitle"></FieldRef>
           <FieldRef Name="SAChangeToken"></FieldRef>
           <FieldRef Name="SAListId"></FieldRef>
-          <FieldRef Name="SAColumnId"></FieldRef>
+          <FieldRef Name="SAColumnName"></FieldRef>
+          <FieldRef Name="SAMessageSubject"></FieldRef>
           <FieldRef Name="SAMessageText"></FieldRef>
           <FieldRef Name="SACCOriginator"></FieldRef>
         </ViewFields>
