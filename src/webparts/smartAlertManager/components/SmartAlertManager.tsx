@@ -8,20 +8,18 @@ import { IWebs, Webs } from "@pnp/sp/webs";
 import { IViewField, ListView } from '@pnp/spfx-controls-react/lib/controls/listView';
 import { RichText } from "@pnp/spfx-controls-react/lib/RichText";
 import { getIconClassName } from '@uifabric/styling';
-import {AlertEditor} from './AlertEditor';
 import { filter, map, sample } from 'lodash';
 import { ComboBox, IComboBox, IComboBoxOption } from 'office-ui-fabric-react/lib/ComboBox';
 import { IColumn } from 'office-ui-fabric-react/lib/components/DetailsList';
-
-import "@pnp/sp/items";
-
 import * as React from 'react';
 import { useEffect, useState } from 'react';
 
 import { SmartAlert } from '../Model';
+import { AlertEditor } from './AlertEditor';
 import { ISmartAlertManagerProps } from './ISmartAlertManagerProps';
 import styles from './SmartAlertManager.module.scss';
 
+import "@pnp/sp/items";
 import "@pnp/sp/lists";
 import "@pnp/sp/subscriptions/list";
 import "@pnp/sp/webs";
@@ -45,11 +43,12 @@ export const SmartAlertManager: React.FunctionComponent<ISmartAlertManagerProps>
                   return sa["SAListId"];
                 })
                 .catch((err) => {
+                  console.error(err);
                   return null;
                 });
               debugger;
               sp.web.lists.getByTitle(props.smartAlertsListId).items.getById(item.Id).delete()
-                .then(async xx => {
+                .then(async () => {
                   debugger;
                   // if its the last alert on the list delet the subscriptopm
                   var remainingAlerts = await sp.web.lists.getByTitle(props.smartAlertsListId).items.filter(`SAListId eq '${listId}'`).get();
@@ -94,7 +93,7 @@ export const SmartAlertManager: React.FunctionComponent<ISmartAlertManagerProps>
 
             }}></i>
           &nbsp;&nbsp;    &nbsp;&nbsp;    &nbsp;&nbsp;
-          <i className={getIconClassName('View')} onClick={(x) => {
+          <i className={getIconClassName('Edit')} onClick={(x) => {
             setMode("showselected");
           }}></i>
         </div>;
